@@ -1,124 +1,102 @@
-let arrayGallery = [
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825_1280.jpg',
-    description: 'Hokkaido Flower',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677_1280.jpg',
-    description: 'Container Haulage Freight',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785_1280.jpg',
-    description: 'Aerial Beach View',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2016/11/18/16/19/flowers-1835619__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2016/11/18/16/19/flowers-1835619_1280.jpg',
-    description: 'Flower Blooms',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2018/09/13/10/36/mountains-3674334__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2018/09/13/10/36/mountains-3674334_1280.jpg',
-    description: 'Alpine Mountains',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/16/23/04/landscape-4208571__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/16/23/04/landscape-4208571_1280.jpg',
-    description: 'Mountain Lake Sailing',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272_1280.jpg',
-    description: 'Alpine Spring Meadows',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/16/21/10/landscape-4208255__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/16/21/10/landscape-4208255_1280.jpg',
-    description: 'Nature Landscape',
-  },
-  {
-    preview:
-      'https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843__340.jpg',
-    original:
-      'https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg',
-    description: 'Lighthouse Coast Sea',
-  },
-]
+import arrayGallery from './gallery-items.js';
 
-const galleryContainer = document.querySelector('.gallery.js-gallery')
-
-const galeryMarkup = createGaleryMarkup(arrayGallery)
-galleryContainer.insertAdjacentHTML('beforeend', galeryMarkup)
+const galleryContainer = document.querySelector('.gallery.js-gallery');
+const galeryMarkup = createGaleryMarkup(arrayGallery);
+galleryContainer.insertAdjacentHTML('beforeend', galeryMarkup);
 
 function createGaleryMarkup(gallery) {
-return gallery.map(({ preview, original, description }) => {
-        return `<li class="gallery__item">
+  return gallery
+    .map(({ preview, original, description }, index) => {
+      return `<li class="gallery__item">
             <a
         class="gallery__link"
-        
         >
     <img
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
       alt="${description}"
+      data-index = "${index}"
     />
   </a>
 </li>
-`;           
-})
-    .join('')
+`;
+    })
+    .join('');
 }
 
-const mainPicture = document.querySelector('.lightbox__image')
-const modalBox = document.querySelector('.js-lightbox')
-const closeBtn = document.querySelector('[data-action="close-lightbox"]')
-console.log(closeBtn);
-console.log(modalBox);
-console.dir(mainPicture.src);
+const mainPicture = document.querySelector('.lightbox__image');
+const modalContainer = document.querySelector('.js-lightbox');
+const closeBtn = document.querySelector('[data-action="close-lightbox"]');
+const backdropDiv = document.querySelector('.lightbox__overlay');
 
-galleryContainer.addEventListener('click', onGalleryContainerClick)
-closeBtn.addEventListener('click', closeModal)
-modalBox.addEventListener('click', onBackDropClick)
+galleryContainer.addEventListener('click', openModal);
+closeBtn.addEventListener('click', closeModal);
+backdropDiv.addEventListener('click', onBackDropClick);
 
-function onGalleryContainerClick(e) {
-    if (e.target.classList.contains('gallery__image')) {
-        mainPicture.src = e.target.dataset.source;
-        openModal()
-    }
+function addImageAttribute(src, alt, index) {
+  mainPicture.setAttribute('src', src);
+  mainPicture.setAttribute('alt', alt);
+  mainPicture.setAttribute('data-index', index);
 }
 
-function openModal(){
-    modalBox.classList.add('is-open')
+function openModal(event) {
+  event.preventDefault();
+
+  const getImg = event.target;
+
+  if (getImg.nodeName !== 'IMG') {
+    return;
+  }
+
+  addImageAttribute(getImg.dataset.source, getImg.alt, getImg.dataset.index);
+
+  window.addEventListener('keydown', onPressEsc);
+  window.addEventListener('keydown', onRigthArrowPress);
+  window.addEventListener('keydown', onLeftArrowPress);
+  modalContainer.classList.add('is-open');
 }
 
 function closeModal() {
-    modalBox.classList.remove('is-open')
-    mainPicture.src = ""
+  window.removeEventListener('keydown', onPressEsc);
+  window.removeEventListener('keydown', onRigthArrowPress);
+  window.removeEventListener('keydown', onLeftArrowPress);
+  modalContainer.classList.remove('is-open');
+  mainPicture.src = '';
 }
 
 function onBackDropClick(e) {
+  console.log(e.target);
+  console.log(e.currentTarget);
+  if (e.currentTarget === e.target) {
+    closeModal();
+  }
+}
 
-    if (e.currentTarget!== e.target) {
-       closeModal()
-    }
+function onPressEsc(e) {
+  if (e.code !== 'Escape') {
+    return;
+  }
+  closeModal();
+}
+
+function onPressXXX(index, count) {
+  let newIndex = index + count;
+
+  if (newIndex === arrayGallery.length || newIndex < 0) return;
+
+  mainPicture.src = arrayGallery[newIndex].original;
+  mainPicture.alt = arrayGallery[newIndex].description;
+  mainPicture.dataset.index = `${newIndex}`;
+}
+
+function onRigthArrowPress(event) {
+  if (event.key === 'ArrowRight') {
+    onPressXXX(+mainPicture.dataset.index, +1);
+  }
+}
+function onLeftArrowPress(event) {
+  if (event.key === 'ArrowLeft') {
+    onPressXXX(+mainPicture.dataset.index, -1);
+  }
 }
