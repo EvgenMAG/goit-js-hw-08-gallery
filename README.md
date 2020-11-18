@@ -1,6 +1,6 @@
 # goit-js-hw-08-gallery
 
-import arrayGallery from './gallery-items.js'
+<!-- import arrayGallery from './gallery-items.js'
 
 
 const galleryContainer = document.querySelector('.gallery.js-gallery')
@@ -24,7 +24,7 @@ return gallery.map(({preview, original, description},index) => {
     />
   </a>
 </li>
-`;           
+`;
 })
     .join('')
 }
@@ -93,18 +93,17 @@ function onPressXXX(e) {
 
 function rigth(i) {
   console.log(i);
-  if(i === arrayGallery.length ) return 
+  if(i === arrayGallery.length ) return
   mainPicture.src = arrayGallery[i].original;
   mainPicture.alt = arrayGallery[i].description
   mainPicture.dataset.index = `${i}`
-  
+
 }
 function left(i) {
   console.log(i);
-  if(i <0 ) return 
+  if(i <0 ) return
   mainPicture.src = arrayGallery[i].original;
   mainPicture.alt = arrayGallery[i].description
   mainPicture.dataset.index = `${i}`
-  
-}
 
+} -->
