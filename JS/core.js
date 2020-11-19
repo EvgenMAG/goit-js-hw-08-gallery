@@ -81,7 +81,7 @@ function onPressEsc(e) {
   closeModal();
 }
 
-function onPressXXX(index, count) {
+function callbackForArrowsPress(index, count) {
   let newIndex = index + count;
 
   if (newIndex === arrayGallery.length || newIndex < 0) return;
@@ -93,11 +93,11 @@ function onPressXXX(index, count) {
 
 function onRigthArrowPress(event) {
   if (event.key === 'ArrowRight') {
-    onPressXXX(+mainPicture.dataset.index, +1);
+    callbackForArrowsPress(+mainPicture.dataset.index, +1);
   }
 }
 function onLeftArrowPress(event) {
   if (event.key === 'ArrowLeft') {
-    onPressXXX(+mainPicture.dataset.index, -1);
+    callbackForArrowsPress(+mainPicture.dataset.index, -1);
   }
 }
