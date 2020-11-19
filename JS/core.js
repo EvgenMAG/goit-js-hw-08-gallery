@@ -67,8 +67,6 @@ function closeModal() {
 }
 
 function onBackDropClick(e) {
-  console.log(e.target);
-  console.log(e.currentTarget);
   if (e.currentTarget === e.target) {
     closeModal();
   }
