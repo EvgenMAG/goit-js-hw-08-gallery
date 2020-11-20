@@ -44,13 +44,13 @@ function addImageAttribute(src, alt, index) {
 function openModal(event) {
   event.preventDefault();
 
-  const getImg = event.target;
+  let {target} = event;
 
-  if (getImg.nodeName !== 'IMG') {
+  if (target.nodeName !== 'IMG') {
     return;
   }
 
-  addImageAttribute(getImg.dataset.source, getImg.alt, getImg.dataset.index);
+  addImageAttribute(target.dataset.source, target.alt, target.dataset.index);
 
   window.addEventListener('keydown', onPressEsc);
   window.addEventListener('keydown', onRigthArrowPress);
@@ -95,7 +95,11 @@ function onRigthArrowPress(event) {
   }
 }
 function onLeftArrowPress(event) {
-  if (event.key === 'ArrowLeft') {
-    callbackForArrowsPress(+mainPicture.dataset.index, -1);
-  }
-}
+    if (event.key === 'ArrowLeft') {
+        callbackForArrowsPress(+mainPicture.dataset.index, -1);
+      }
+    }
+    
+
+
+ 

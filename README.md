@@ -82,7 +82,6 @@ function onPressXXX(e) {
    let index = Number(mainPicture.dataset.index)
   if (e.code === 'ArrowRight') {
     let rigthIndex = index + 1
-    console.log(rigthIndex);
     rigth(rigthIndex)
   } else if (e.code === 'ArrowLeft') {
     let leftIndex = index - 1
