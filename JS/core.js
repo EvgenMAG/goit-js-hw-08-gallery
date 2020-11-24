@@ -44,7 +44,7 @@ function addImageAttribute(src, alt, index) {
 function openModal(event) {
   event.preventDefault();
 
-  let {target} = event;
+  const {target} = event;
 
   if (target.nodeName !== 'IMG') {
     return;
